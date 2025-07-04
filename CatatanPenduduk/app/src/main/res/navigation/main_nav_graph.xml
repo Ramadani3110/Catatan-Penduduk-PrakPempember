@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/desaFragment">
+
+    <fragment
+        android:id="@+id/desaFragment"
+        android:name="com.rams.catatanpenduduk.ui.desa.DesaFragment"
+        android:label="fragment_desa"
+        tools:layout="@layout/fragment_desa" />
+    <fragment
+        android:id="@+id/pendudukFragment"
+        android:name="com.rams.catatanpenduduk.ui.penduduk.PendudukFragment"
+        android:label="fragment_penduduk"
+        tools:layout="@layout/fragment_penduduk" />
+    <fragment
+        android:id="@+id/kecamatanFragment"
+        android:name="com.rams.catatanpenduduk.ui.kecamatan.KecamatanFragment"
+        android:label="fragment_kecamatan"
+        tools:layout="@layout/fragment_kecamatan" />
+</navigation>
