@@ -20,7 +20,6 @@ class DesaController extends Controller
                 'kecamatan_id' => $desa->kecamatan_id,
                 'nama_kecamatan' => $desa->kecamatan->nama_kecamatan ?? null,
                 'created_at' => $desa->created_at,
-                'updated_at' => $desa->updated_at,
             ];
         });
 
@@ -69,7 +68,6 @@ class DesaController extends Controller
                 'kecamatan_id' => $desa->kecamatan_id,
                 'nama_kecamatan' => $desa->kecamatan->nama_kecamatan ?? null,
                 'created_at' => $desa->created_at,
-                'updated_at' => $desa->updated_at,
             ]
         ]);
     }

@@ -11,7 +11,13 @@ class KecamatanController extends Controller
     // Tampilkan semua data kecamatan
     public function index()
     {
-        $kecamatans = Kecamatan::all();
+        $kecamatans = Kecamatan::all()->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'nama_kecamatan' => $item->nama_kecamatan,
+                'created_at' => $item->created_at,
+            ];
+        });
 
         return response()->json([
             'success' => true,
@@ -46,7 +52,16 @@ class KecamatanController extends Controller
             return response()->json(['message' => 'Kecamatan tidak ditemukan'], 404);
         }
 
-        return response()->json($kecamatan);
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail kecamatan berhasil diambil',
+            'data' => [
+                'id' => $kecamatan->id,
+                'nama_kecamatan' => $kecamatan->nama_kecamatan,
+                'created_at' => $kecamatan->created_at,
+                'updated_at' => $kecamatan->updated_at
+            ]
+        ], 200);
     }
 
     // Update data kecamatan

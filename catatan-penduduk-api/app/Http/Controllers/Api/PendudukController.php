@@ -22,7 +22,6 @@ class PendudukController extends Controller
                 'desa_id' => $p->desa_id,
                 'nama_desa' => $p->desa->nama_desa ?? null,
                 'created_at' => $p->created_at,
-                'updated_at' => $p->updated_at,
             ];
         });
 
@@ -74,7 +73,6 @@ class PendudukController extends Controller
                 'desa_id' => $penduduk->desa_id,
                 'nama_desa' => $penduduk->desa->nama_desa ?? null,
                 'created_at' => $penduduk->created_at,
-                'updated_at' => $penduduk->updated_at,
             ]
         ]);
     }
