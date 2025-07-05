@@ -51,3 +51,7 @@ php artisan serve
 # use this if you want this app running on local network
 php artisan serve --host=192.x.x.x --port=8000
 ```
+### 9. For test endpoint you can open postman and drag and drop file in this link
+```
+https://github.com/Ramadani3110/Catatan-Penduduk-PrakPempember/tree/main/postmancollection
+```
