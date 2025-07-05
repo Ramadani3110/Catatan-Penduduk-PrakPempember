@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class SinglePendudukResponse(
 
 	@field:SerializedName("data")
-	val data: Data,
+	val data: SinglePendudukData,
 
 	@field:SerializedName("success")
 	val success: Boolean,
@@ -14,7 +14,7 @@ data class SinglePendudukResponse(
 	val message: String
 )
 
-data class Data(
+data class SinglePendudukData(
 
 	@field:SerializedName("nik")
 	val nik: String,

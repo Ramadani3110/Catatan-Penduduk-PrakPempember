@@ -9,8 +9,13 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.rams.catatanpenduduk.R
+import com.rams.catatanpenduduk.data.local.TokenManager
 import com.rams.catatanpenduduk.ui.auth.LoginActivity
+import com.rams.catatanpenduduk.ui.main.MainActivity
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
@@ -26,10 +31,20 @@ class SplashActivity : AppCompatActivity() {
         setupSplash()
     }
 
-    private fun setupSplash(){
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+    private fun setupSplash() {
+        lifecycleScope.launch {
+            val tokenManager = TokenManager.getInstance(applicationContext)
+            val token = tokenManager.getToken()
+
+            delay(3000)
+
+            if (token.isNullOrBlank()) {
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+            } else {
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            }
+
             finish()
-        }, 2000)
+        }
     }
 }

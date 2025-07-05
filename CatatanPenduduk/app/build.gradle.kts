@@ -16,7 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String","BASE_URL","\"http://1.1.1.1/\"")
+        buildConfigField("String","BASE_URL","\"http://192.168.100.154:8000/\"")
     }
 
     buildTypes {
@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.smoothbottombar)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.androidx.datastore.preferences)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

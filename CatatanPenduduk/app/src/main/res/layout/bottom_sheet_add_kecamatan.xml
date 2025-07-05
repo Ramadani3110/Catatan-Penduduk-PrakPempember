@@ -35,13 +35,12 @@
             android:hint="Nama Kecamatan" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.rams.catatanpenduduk.components.CustomButtonView
         android:id="@+id/btnAddKecamatan"
-        style="@style/Widget.Material3.Button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Tambah"
+        app:buttonText="Tambah"
         app:layout_constraintEnd_toEndOf="@+id/tilNamaKecamatan"
         app:layout_constraintStart_toStartOf="@+id/tilNamaKecamatan"
         app:layout_constraintTop_toBottomOf="@+id/tilNamaKecamatan" />

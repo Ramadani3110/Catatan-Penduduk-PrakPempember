@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class DashboardResponse(
 
 	@field:SerializedName("data")
-	val data: Data,
+	val data: DataDashboard,
 
 	@field:SerializedName("success")
 	val success: Boolean,
@@ -14,7 +14,7 @@ data class DashboardResponse(
 	val message: String
 )
 
-data class Data(
+data class DataDashboard(
 
 	@field:SerializedName("total_kecamatan")
 	val totalKecamatan: Int,

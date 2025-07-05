@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class AllKecamatanResponse(
 
 	@field:SerializedName("data")
-	val data: List<DataItem>,
+	val data: List<DataKecamatan>,
 
 	@field:SerializedName("success")
 	val success: Boolean,
@@ -14,7 +14,7 @@ data class AllKecamatanResponse(
 	val message: String
 )
 
-data class DataItem(
+data class DataKecamatan(
 
 	@field:SerializedName("nama_kecamatan")
 	val namaKecamatan: String,

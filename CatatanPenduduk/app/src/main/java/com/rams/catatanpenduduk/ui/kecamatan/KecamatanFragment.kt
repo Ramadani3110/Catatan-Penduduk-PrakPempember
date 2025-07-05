@@ -12,27 +12,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.rams.catatanpenduduk.R
 import com.rams.catatanpenduduk.databinding.FragmentKecamatanBinding
-import com.rams.catatanpenduduk.helper.KecamatanDumy
+import com.rams.catatanpenduduk.di.Inject
+import com.rams.catatanpenduduk.di.ViewModelFactory
 import com.rams.catatanpenduduk.utils.FabHandler
 
 class KecamatanFragment : Fragment(), FabHandler {
 
-    private val dumyKecamatan = listOf<KecamatanDumy>(
-        KecamatanDumy(1,"Kecamatan Tegal"),
-        KecamatanDumy(2,"Kecamatan Jonggol"),
-        KecamatanDumy(3,"Kecamatan Hongkon"),
-        KecamatanDumy(4,"Kecamatan Surabaya"),
-        KecamatanDumy(5,"Kecamatan Ponorogo"),
-    )
-
     private var _binding: FragmentKecamatanBinding? = null
     private val binding get() = _binding!!
     private lateinit var kecamatanAdapter: KecamatanAdapter
+    private lateinit var kecamatanViewModel: KecamatanViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,14 +44,23 @@ class KecamatanFragment : Fragment(), FabHandler {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val repository = Inject.provideRepository(requireContext())
+        val factory = ViewModelFactory(repository)
+        kecamatanViewModel = ViewModelProvider(this, factory)[KecamatanViewModel::class.java]
+
         setupAdapter()
+        setupObservers()
         setupSwipeToDeleteWithConfirmation()
+        if (kecamatanViewModel.kecamatanResult.value.isNullOrEmpty()) {
+            kecamatanViewModel.getKecamatan()
+        }
     }
 
     private fun setupAdapter(){
-        kecamatanAdapter = KecamatanAdapter{kecamatan ->
-            EditKecamatanBottomSheetDialog.newInstance(kecamatan.nama)
-                .show(parentFragmentManager, EditKecamatanBottomSheetDialog.TAG)
+        kecamatanAdapter = KecamatanAdapter { kecamatan ->
+            EditKecamatanBottomSheetDialog.newInstance(kecamatan.id, kecamatan.namaKecamatan).apply {
+                kecamatanViewModel = this@KecamatanFragment.kecamatanViewModel
+            }.show(parentFragmentManager, EditKecamatanBottomSheetDialog.TAG)
         }
 
         binding.apply {
@@ -66,8 +70,24 @@ class KecamatanFragment : Fragment(), FabHandler {
             }
         }
 
-        kecamatanAdapter.submitList(dumyKecamatan)
+    }
 
+    private fun setupObservers(){
+        kecamatanViewModel.isLoading.observe(viewLifecycleOwner) {
+            binding.rvKecamatan.visibility = if (it) View.GONE else View.VISIBLE
+            binding.pbAKec.visibility = if (it) View.VISIBLE else View.GONE
+        }
+        kecamatanViewModel.kecamatanResult.observe(viewLifecycleOwner){
+            kecamatanAdapter.submitList(it)
+        }
+        kecamatanViewModel.errorMessage.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        }
+        kecamatanViewModel.operationMessage.observe(viewLifecycleOwner) {
+            if (!it.isNullOrBlank()) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -76,8 +96,10 @@ class KecamatanFragment : Fragment(), FabHandler {
     }
 
     override fun onFabClick() {
-        AddKecamatanBottomSheetDialog.newInstance()
-            .show(parentFragmentManager, AddKecamatanBottomSheetDialog.TAG)
+        val dialog = AddKecamatanBottomSheetDialog.newInstance().apply {
+            kecamatanViewModel = this@KecamatanFragment.kecamatanViewModel
+        }
+        dialog.show(parentFragmentManager, AddKecamatanBottomSheetDialog.TAG)
     }
 
     override fun onShow(): Boolean {
@@ -104,12 +126,9 @@ class KecamatanFragment : Fragment(), FabHandler {
 
                 AlertDialog.Builder(requireContext())
                     .setTitle("Hapus Kecamatan")
-                    .setMessage("Yakin ingin menghapus '${itemToDelete.nama}'?")
+                    .setMessage("Yakin ingin menghapus '${itemToDelete.namaKecamatan}'?")
                     .setPositiveButton("Ya") { _, _ ->
-                        val newList = kecamatanAdapter.currentList.toMutableList()
-                        newList.removeAt(position)
-                        kecamatanAdapter.submitList(newList)
-                        Toast.makeText(requireContext(), "Dihapus: ${itemToDelete.nama}", Toast.LENGTH_SHORT).show()
+                        kecamatanViewModel.deleteKecamatan(itemToDelete.id)
                     }
                     .setNegativeButton("Batal") { _, _ ->
                         kecamatanAdapter.notifyItemChanged(position)

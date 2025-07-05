@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rams.catatanpenduduk.data.request.KecamatanRequest
 import com.rams.catatanpenduduk.databinding.BottomSheetAddKecamatanBinding
 
 class AddKecamatanBottomSheetDialog : BottomSheetDialogFragment() {
     private var _binding: BottomSheetAddKecamatanBinding? = null
     private val binding get() = _binding!!
 
-    companion object{
+    lateinit var kecamatanViewModel: KecamatanViewModel
+
+    companion object {
         fun newInstance() = AddKecamatanBottomSheetDialog()
         val TAG = AddKecamatanBottomSheetDialog::class.simpleName
     }
@@ -29,13 +32,32 @@ class AddKecamatanBottomSheetDialog : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupListener()
+        setupObservers()
     }
 
-    private fun setupListener(){
-        binding.btnAddKecamatan.setOnClickListener {
-            val namaKecamatan = binding.edNamaKecamatan.text.toString()
-            Toast.makeText(requireContext(), "$namaKecamatan disimpan", Toast.LENGTH_SHORT).show()
-            dismiss()
+    private fun setupObservers() {
+        kecamatanViewModel.isLoadingOperation.observe(viewLifecycleOwner) {
+            binding.btnAddKecamatan.showLoading(it)
+        }
+        kecamatanViewModel.operationMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                dismiss()
+                kecamatanViewModel.clearOperationMessage()
+            }
+        }
+    }
+
+    private fun setupListener() {
+        binding.btnAddKecamatan.setOnClickAction {
+            val namaKecamatan = binding.edNamaKecamatan.text.toString().trim()
+
+            if (namaKecamatan.isEmpty()) {
+                binding.edNamaKecamatan.error = "Nama kecamatan tidak boleh kosong"
+                return@setOnClickAction
+            }
+
+            val request = KecamatanRequest(namaKecamatan)
+            kecamatanViewModel.addKecamatan(request)
         }
     }
 
