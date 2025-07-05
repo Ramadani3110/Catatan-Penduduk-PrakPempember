@@ -1,11 +1,14 @@
 package com.rams.catatanpenduduk.data.repository
 
 import com.rams.catatanpenduduk.data.local.TokenManager
+import com.rams.catatanpenduduk.data.model.AllDesaResponse
 import com.rams.catatanpenduduk.data.model.AllKecamatanResponse
 import com.rams.catatanpenduduk.data.model.BaseResponse
 import com.rams.catatanpenduduk.data.model.LoginResponse
+import com.rams.catatanpenduduk.data.model.SingleDesaResponse
 import com.rams.catatanpenduduk.data.model.SingleKecamatanResponse
 import com.rams.catatanpenduduk.data.remote.api.ApiService
+import com.rams.catatanpenduduk.data.request.DesaRequest
 import com.rams.catatanpenduduk.data.request.KecamatanRequest
 import com.rams.catatanpenduduk.data.request.LoginRequest
 import com.rams.catatanpenduduk.helper.Result
@@ -40,6 +43,7 @@ class CatatanPendudukRepository private constructor(
         }
     }
 
+    // kecamatan
     suspend fun getKecamatan(): Result<AllKecamatanResponse>{
         return try {
             val response = apiService.getKecamatan()
@@ -110,6 +114,89 @@ class CatatanPendudukRepository private constructor(
             Result.Error("Terjadi kesalahan: ${e.message}")
         }
     }
+    // kecamatan
+
+    // desa
+    suspend fun getDesa(): Result<AllDesaResponse> {
+        return try {
+            val response = apiService.getDesa()
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Result.Success(body)
+                } else {
+                    Result.Error("Data desa tidak ditemukan.")
+                }
+            } else {
+                val error = response.parseError(AllDesaResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal mengambil data desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Terjadi kesalahan saat mengambil data desa.")
+        }
+    }
+
+    suspend fun addDesa(request: DesaRequest): Result<SingleDesaResponse> {
+        return try {
+            val response = apiService.addDesa(request)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Result.Success(body)
+                } else {
+                    Result.Error("Gagal menambahkan desa: Response kosong.")
+                }
+            } else {
+                val error = response.parseError(SingleDesaResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menambahkan desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Terjadi kesalahan saat menambahkan desa.")
+        }
+    }
+
+    suspend fun updateDesa(id: Int, request: DesaRequest): Result<SingleDesaResponse> {
+        return try {
+            val response = apiService.updateDesa(id, request)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Result.Success(body)
+                } else {
+                    Result.Error("Gagal mengubah desa: Response kosong.")
+                }
+            } else {
+                val error = response.parseError(SingleDesaResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal mengubah desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Terjadi kesalahan saat mengubah desa.")
+        }
+    }
+
+    suspend fun deleteDesa(id: Int): Result<BaseResponse> {
+        return try {
+            val response = apiService.deleteDesa(id)
+            if (response.isSuccessful) {
+                val body = response.body()
+                if (body != null) {
+                    Result.Success(body)
+                } else {
+                    Result.Error("Gagal menghapus desa: Response kosong.")
+                }
+            } else {
+                val error = response.parseError(BaseResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menghapus desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error(e.message ?: "Terjadi kesalahan saat menghapus desa.")
+        }
+    }
+    // desa
 
     suspend fun logout() {
         tokenManager.clearToken()

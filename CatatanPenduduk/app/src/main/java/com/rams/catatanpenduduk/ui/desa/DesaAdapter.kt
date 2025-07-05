@@ -4,24 +4,24 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.rams.catatanpenduduk.data.model.DataDesa
 import com.rams.catatanpenduduk.databinding.ItemDesaLayoutBinding
-import com.rams.catatanpenduduk.helper.DesaDumy
 import com.rams.catatanpenduduk.utils.GenericDiffUtil
 
 class DesaAdapter(
-    private val onItemClick: (DesaDumy) -> Unit
-) : ListAdapter<DesaDumy, DesaAdapter.DesaViewHolder>(GenericDiffUtil(
+    private val onItemClick: (DataDesa) -> Unit
+) : ListAdapter<DataDesa, DesaAdapter.DesaViewHolder>(GenericDiffUtil(
     areItemsSame = { old, new -> old.id == new.id },
     areContentsSame = { old, new -> old == new }
 )) {
     inner class DesaViewHolder(private val binding : ItemDesaLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(desaDumy: DesaDumy){
+        fun bind(dataDesa: DataDesa){
             binding.apply {
-                tvNamaDesa.text = desaDumy.nama
-                tvNamaKecamatan.text = desaDumy.kecamatan
+                tvNamaDesa.text = dataDesa.namaDesa
+                tvNamaKecamatan.text = dataDesa.namaKecamatan
 
                 root.setOnClickListener {
-                    onItemClick(desaDumy)
+                    onItemClick(dataDesa)
                 }
             }
         }

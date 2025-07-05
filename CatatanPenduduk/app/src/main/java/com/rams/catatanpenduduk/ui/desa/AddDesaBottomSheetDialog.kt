@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.rams.catatanpenduduk.data.request.DesaRequest
 import com.rams.catatanpenduduk.databinding.BottomSheetAddDesaBinding
-import com.rams.catatanpenduduk.helper.KecamatanDumy
+import com.rams.catatanpenduduk.di.Inject
+import com.rams.catatanpenduduk.di.ViewModelFactory
+import com.rams.catatanpenduduk.ui.kecamatan.KecamatanViewModel
 
 class AddDesaBottomSheetDialog : BottomSheetDialogFragment() {
 
@@ -16,15 +21,12 @@ class AddDesaBottomSheetDialog : BottomSheetDialogFragment() {
         val TAG = AddDesaBottomSheetDialog::class.simpleName
         fun newInstance() = AddDesaBottomSheetDialog()
     }
-    private val dumyKecamatan = listOf<KecamatanDumy>(
-        KecamatanDumy(1,"Kecamatan Tegal"),
-        KecamatanDumy(2,"Kecamatan Jonggol"),
-        KecamatanDumy(3,"Kecamatan Hongkon"),
-        KecamatanDumy(4,"Kecamatan Surabaya"),
-        KecamatanDumy(5,"Kecamatan Ponorogo"),
-    )
+
     private var _binding: BottomSheetAddDesaBinding? = null
     private val binding get() = _binding!!
+    private lateinit var kecamatanViewModel: KecamatanViewModel
+    lateinit var desaViewModel: DesaViewModel
+    private var selectedKecamatanId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,19 +39,82 @@ class AddDesaBottomSheetDialog : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val repository = Inject.provideRepository(requireContext())
+        val factory = ViewModelFactory(repository)
+        kecamatanViewModel = ViewModelProvider(this, factory)[KecamatanViewModel::class.java]
         setupAutoCompleteKecamatan()
+        setupListener()
+        setupObservers()
     }
 
-    private fun setupAutoCompleteKecamatan(){
-        val autoCompleteKecamatan = binding.actvKecamatanId
-
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, dumyKecamatan)
-        autoCompleteKecamatan.setAdapter(adapter)
-
-        autoCompleteKecamatan.setOnItemClickListener {parent, _, position, _ ->
-            val selectedKecamatan = parent.getItemAtPosition(position) as KecamatanDumy
-            Toast.makeText(requireContext(), "Dipilih ${selectedKecamatan.nama} - ${selectedKecamatan.id}", Toast.LENGTH_LONG).show()
+    private fun setupObservers() {
+        desaViewModel.isLoadingOperation.observe(viewLifecycleOwner) {
+            binding.btnTambahDesa.showLoading(it)
         }
+
+        desaViewModel.operationMessage.observe(viewLifecycleOwner) { message ->
+            if (!message.isNullOrBlank()) {
+                dismiss()
+                desaViewModel.clearOperationMessage()
+            }
+        }
+    }
+
+    private fun setupListener() {
+        binding.btnTambahDesa.setOnClickAction {
+            val namaDesa = binding.edNamaDesa.text.toString().trim()
+
+            if (namaDesa.isEmpty()) {
+                binding.edNamaDesa.error = "Nama desa tidak boleh kosong"
+                return@setOnClickAction
+            }
+
+            if (selectedKecamatanId == null) {
+                binding.actvKecamatanId.error = "Pilih kecamatan terlebih dahulu"
+                return@setOnClickAction
+            }
+
+            val request = DesaRequest(
+                namaDesa = namaDesa,
+                kecamatanId = selectedKecamatanId!!
+            )
+
+            desaViewModel.addDesa(request)
+        }
+    }
+
+    private fun setupAutoCompleteKecamatan() {
+        val autoCompleteKecamatan = binding.actvKecamatanId
+        autoCompleteKecamatan.threshold = 1
+
+        kecamatanViewModel.kecamatanResult.observe(viewLifecycleOwner) { list ->
+            val displayedList = list.sortedBy { it.namaKecamatan }
+            val namaList = displayedList.map { it.namaKecamatan }
+            val namaToKecamatanMap = displayedList.associateBy { it.namaKecamatan }
+
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_dropdown_item_1line,
+                namaList
+            )
+
+            autoCompleteKecamatan.setAdapter(adapter)
+
+            // Handle klik pada item dari dropdown
+            autoCompleteKecamatan.setOnItemClickListener { _, _, position, _ ->
+                val nama = adapter.getItem(position)
+                val selected = namaToKecamatanMap[nama]
+                selectedKecamatanId = selected?.id
+            }
+
+            // Validasi ketika user ketik manual id nya dipilih kembali
+            autoCompleteKecamatan.doAfterTextChanged { text ->
+                val selected = namaToKecamatanMap[text.toString()]
+                selectedKecamatanId = selected?.id
+            }
+        }
+
+        kecamatanViewModel.getKecamatan()
     }
 
     override fun onDestroy() {
