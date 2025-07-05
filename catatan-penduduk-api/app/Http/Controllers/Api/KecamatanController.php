@@ -38,6 +38,7 @@ class KecamatanController extends Controller
         ]);
 
         return response()->json([
+            'success' => true,
             'message' => 'Data kecamatan berhasil disimpan.',
             'data' => $kecamatan
         ], 201);
@@ -93,11 +94,17 @@ class KecamatanController extends Controller
         $kecamatan = Kecamatan::find($id);
 
         if (!$kecamatan) {
-            return response()->json(['message' => 'Kecamatan tidak ditemukan'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Kecamatan tidak ditemukan'
+            ], 404);
         }
 
         $kecamatan->delete();
 
-        return response()->json(['message' => 'Data kecamatan berhasil dihapus.']);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data kecamatan berhasil dihapus.'
+        ], 200);
     }
 }
