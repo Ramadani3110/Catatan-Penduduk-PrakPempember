@@ -3,14 +3,17 @@ package com.rams.catatanpenduduk.data.repository
 import com.rams.catatanpenduduk.data.local.TokenManager
 import com.rams.catatanpenduduk.data.model.AllDesaResponse
 import com.rams.catatanpenduduk.data.model.AllKecamatanResponse
+import com.rams.catatanpenduduk.data.model.AllPendudukResponse
 import com.rams.catatanpenduduk.data.model.BaseResponse
 import com.rams.catatanpenduduk.data.model.LoginResponse
 import com.rams.catatanpenduduk.data.model.SingleDesaResponse
 import com.rams.catatanpenduduk.data.model.SingleKecamatanResponse
+import com.rams.catatanpenduduk.data.model.SinglePendudukResponse
 import com.rams.catatanpenduduk.data.remote.api.ApiService
 import com.rams.catatanpenduduk.data.request.DesaRequest
 import com.rams.catatanpenduduk.data.request.KecamatanRequest
 import com.rams.catatanpenduduk.data.request.LoginRequest
+import com.rams.catatanpenduduk.data.request.PendudukRequest
 import com.rams.catatanpenduduk.helper.Result
 import com.rams.catatanpenduduk.helper.parseError
 
@@ -197,6 +200,68 @@ class CatatanPendudukRepository private constructor(
         }
     }
     // desa
+
+    // penduduk
+    suspend fun getPenduduk(): Result<AllPendudukResponse> {
+        return try {
+            val response = apiService.getPenduduk()
+            if (response.isSuccessful) {
+                Result.Success(response.body()!!)
+            } else {
+                val error = response.parseError(AllPendudukResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menghapus desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error("Terjadi kesalahan: ${e.message}")
+        }
+    }
+
+    suspend fun addPenduduk(request: PendudukRequest): Result<SinglePendudukResponse> {
+        return try {
+            val response = apiService.addPenduduk(request)
+            if (response.isSuccessful) {
+                Result.Success(response.body()!!)
+            } else {
+                val error = response.parseError(SinglePendudukResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menghapus desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error("Terjadi kesalahan: ${e.message}")
+        }
+    }
+
+    suspend fun updatePenduduk(id: Int, request: PendudukRequest): Result<SinglePendudukResponse> {
+        return try {
+            val response = apiService.updatePenduduk(id, request)
+            if (response.isSuccessful) {
+                Result.Success(response.body()!!)
+            } else {
+                val error = response.parseError(SinglePendudukResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menghapus desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error("Terjadi kesalahan: ${e.message}")
+        }
+    }
+
+    suspend fun deletePenduduk(id: Int): Result<BaseResponse> {
+        return try {
+            val response = apiService.deletePenduduk(id)
+            if (response.isSuccessful) {
+                Result.Success(response.body()!!)
+            } else {
+                val error = response.parseError(BaseResponse::class.java)
+                val errorMsg = error?.message ?: "Gagal menghapus desa (${response.code()})"
+                Result.Error(errorMsg)
+            }
+        } catch (e: Exception) {
+            Result.Error("Terjadi kesalahan: ${e.message}")
+        }
+    }
+    // penduduk
 
     suspend fun logout() {
         tokenManager.clearToken()

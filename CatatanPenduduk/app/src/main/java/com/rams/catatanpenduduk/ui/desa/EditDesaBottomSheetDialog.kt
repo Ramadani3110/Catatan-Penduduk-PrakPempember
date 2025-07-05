@@ -139,9 +139,7 @@ class EditDesaBottomSheetDialog : BottomSheetDialogFragment() {
         }
 
         desaViewModel.operationMessage.observe(viewLifecycleOwner) { message ->
-            Log.d("EditDesaBottomSheetDialog", "operationMessage: $message")
             if (!message.isNullOrBlank()) {
-                Log.d("EditDesaBottomSheetDialog", "masuk")
                 dismiss()
                 desaViewModel.clearOperationMessage()
             }

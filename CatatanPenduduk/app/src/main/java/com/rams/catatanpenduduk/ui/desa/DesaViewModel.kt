@@ -66,8 +66,6 @@ class DesaViewModel(private val catatanPendudukRepository: CatatanPendudukReposi
             _isLoadingOperation.value = true
             when (val result = catatanPendudukRepository.updateDesa(id, request)) {
                 is Result.Success -> {
-                    _operationMessage.value = null
-                    Log.d("DesaViewModel", "Update berhasil")
                     _operationMessage.value = "Desa berhasil diubah"
                     _isLoadingOperation.value = false
                 }

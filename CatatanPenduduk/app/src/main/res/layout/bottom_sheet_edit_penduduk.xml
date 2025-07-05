@@ -1,6 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Ubah Penduduk"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUNikPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edUNikPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NIK"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUNamaPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilUNikPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/tilUNikPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilUNikPenduduk">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edUNamaPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUpUmurPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilUNamaPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/tilUNamaPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilUNamaPenduduk">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edUpUmurPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Umur"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Jenis Kelamin"
+        app:layout_constraintStart_toStartOf="@+id/tilUpUmurPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilUpUmurPenduduk" />
+
+    <RadioGroup
+        android:id="@+id/rgUJkPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/tilUpUmurPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/textView14"
+        app:layout_constraintTop_toBottomOf="@+id/textView14">
+
+        <RadioButton
+            android:id="@+id/rUbLaki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            android:text="Laki-Laki" />
+
+        <RadioButton
+            android:id="@+id/rbUPerempuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perempuan" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUDesaId"
+        android:layout_width="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:hint="Pilih Desa"
+        app:layout_constraintEnd_toEndOf="@+id/rgUJkPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/rgUJkPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/rgUJkPenduduk">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvUDesaId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="yes"
+            android:minHeight="48dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.rams.catatanpenduduk.components.CustomButtonView
+        android:id="@+id/btnUbahDesa"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonText="Ubah"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilUDesaId"
+        app:layout_constraintStart_toStartOf="@+id/tilUDesaId"
+        app:layout_constraintTop_toBottomOf="@+id/tilUDesaId" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/groupFormPenduduk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tilUNikPenduduk,tilUNamaPenduduk,tilUpUmurPenduduk,textView14,rgUJkPenduduk,tilUDesaId,btnUbahDesa" />
+
+    <ProgressBar
+        android:id="@+id/pbUPenduduk"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

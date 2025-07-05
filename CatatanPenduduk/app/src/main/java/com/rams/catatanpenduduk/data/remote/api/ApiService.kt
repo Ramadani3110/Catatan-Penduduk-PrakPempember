@@ -8,9 +8,11 @@ import com.rams.catatanpenduduk.data.model.DashboardResponse
 import com.rams.catatanpenduduk.data.model.LoginResponse
 import com.rams.catatanpenduduk.data.model.SingleDesaResponse
 import com.rams.catatanpenduduk.data.model.SingleKecamatanResponse
+import com.rams.catatanpenduduk.data.model.SinglePendudukResponse
 import com.rams.catatanpenduduk.data.request.DesaRequest
 import com.rams.catatanpenduduk.data.request.KecamatanRequest
 import com.rams.catatanpenduduk.data.request.LoginRequest
+import com.rams.catatanpenduduk.data.request.PendudukRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -68,6 +70,27 @@ interface ApiService {
     suspend fun deleteDesa(
         @Path("id") id: Int
     ): Response<BaseResponse>
-    // desa end
+    // desa end\
+
+    // penduduk start
+    @GET("api/penduduks")
+    suspend fun getPenduduk(): Response<AllPendudukResponse>
+
+    @POST("api/penduduks")
+    suspend fun addPenduduk(
+        @Body pendudukRequest: PendudukRequest
+    ): Response<SinglePendudukResponse>
+
+    @POST("api/penduduks/{id}")
+    suspend fun updatePenduduk(
+        @Path("id") id: Int,
+        @Body pendudukRequest: PendudukRequest
+    ): Response<SinglePendudukResponse>
+
+    @DELETE("api/penduduks/{id}")
+    suspend fun deletePenduduk(
+        @Path("id") id: Int
+    ): Response<BaseResponse>
+    // penduduk end
 
 }

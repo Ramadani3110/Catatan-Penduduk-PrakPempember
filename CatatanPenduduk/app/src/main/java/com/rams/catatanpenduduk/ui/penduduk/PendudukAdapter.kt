@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.rams.catatanpenduduk.data.model.DataPenduduk
 import com.rams.catatanpenduduk.databinding.ItemPendudukLayoutBinding
-import com.rams.catatanpenduduk.helper.PendudukDumy
 import com.rams.catatanpenduduk.utils.GenericDiffUtil
 
 class PendudukAdapter(
-    private val onItemClick: (String) -> Unit
-) : ListAdapter<PendudukDumy, PendudukAdapter.PendudukViewHolder>(
+    private val onItemClick: (DataPenduduk) -> Unit
+) : ListAdapter<DataPenduduk, PendudukAdapter.PendudukViewHolder>(
     GenericDiffUtil(
         areItemsSame = { old, new -> old.id == new.id },
         areContentsSame = { old, new -> old == new }
@@ -34,15 +34,19 @@ class PendudukAdapter(
 
     inner class PendudukViewHolder(private val binding: ItemPendudukLayoutBinding): RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(pendudukDumy: PendudukDumy){
+        fun bind(dataPenduduk: DataPenduduk){
             binding.apply {
-                tvNamaPend.text = pendudukDumy.nama
-                tvNikPend.text = "NIK : ${pendudukDumy.nik}"
-                tvGenderPend.text = pendudukDumy.jenisKelamin
-                tvAgePend.text = "${pendudukDumy.umur} Tahun"
-                tvDesaPend.text = pendudukDumy.namaDesa
+                tvNamaPend.text = dataPenduduk.nama
+                tvNikPend.text = "NIK : ${dataPenduduk.nik}"
+                if (dataPenduduk.jenisKelamin == "L") {
+                    tvGenderPend.text = "Laki-laki"
+                } else {
+                    tvGenderPend.text = "Perempuan"
+                }
+                tvAgePend.text = "${dataPenduduk.umur} Tahun"
+                tvDesaPend.text = dataPenduduk.namaDesa
                 root.setOnClickListener {
-                    onItemClick(pendudukDumy.nama)
+                    onItemClick(dataPenduduk)
                 }
             }
         }

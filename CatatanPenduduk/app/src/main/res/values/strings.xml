@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">CatatanPenduduk</string>
-    <string name="anggota_kelompok"><![CDATA[David Heibert Gumogar & Muhamad Ramadani]]></string>
+
     <string name="app_title">Aplkasi Pencatatan Penduduk</string>
     <string name="by">Dibuat Oleh</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="anggota_kelompok">Muhamad Ramadani | David Heibert. G | Iwan Cahyo. P</string>
 </resources>

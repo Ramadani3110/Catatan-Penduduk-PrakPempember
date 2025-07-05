@@ -188,5 +188,4 @@ class KecamatanFragment : Fragment(), FabHandler {
         itemTouchHelper.attachToRecyclerView(binding.rvKecamatan)
     }
 
-
 }

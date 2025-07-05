@@ -1,6 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Tambah Penduduk"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNikPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView11">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edNikPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="NIK"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNamaPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilNikPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/tilNikPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilNikPenduduk">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edNamaPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUmurPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilNamaPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/tilNamaPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilNamaPenduduk">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edUmurPenduduk"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Umur"
+            android:inputType="number" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Jenis Kelamin"
+        app:layout_constraintStart_toStartOf="@+id/tilUmurPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/tilUmurPenduduk" />
+
+    <RadioGroup
+        android:id="@+id/rgJkPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/tilUmurPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/textView12"
+        app:layout_constraintTop_toBottomOf="@+id/textView12">
+
+        <RadioButton
+            android:id="@+id/rbLaki"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="16dp"
+            android:text="Laki-Laki" />
+
+        <RadioButton
+            android:id="@+id/rbPerempuan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perempuan" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDesaId"
+        android:layout_width="0dp"
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:hint="Pilih Desa"
+        app:layout_constraintEnd_toEndOf="@+id/rgJkPenduduk"
+        app:layout_constraintStart_toStartOf="@+id/rgJkPenduduk"
+        app:layout_constraintTop_toBottomOf="@+id/rgJkPenduduk">
+
+        <AutoCompleteTextView
+            android:id="@+id/actvDesaId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="yes"
+            android:minHeight="48dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.rams.catatanpenduduk.components.CustomButtonView
+        android:id="@+id/btnTambahPenduduk"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:buttonText="Tambah"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilDesaId"
+        app:layout_constraintStart_toStartOf="@+id/tilDesaId"
+        app:layout_constraintTop_toBottomOf="@+id/tilDesaId" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
