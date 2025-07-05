@@ -55,3 +55,8 @@ php artisan serve --host=192.x.x.x --port=8000
 ```
 https://github.com/Ramadani3110/Catatan-Penduduk-PrakPempember/tree/main/postmancollection
 ```
+
+### Contributors
+1. Iwan Cahyo Pambudi
+2. David Heiberth Gumogar
+3. Muhamad Ramadani
