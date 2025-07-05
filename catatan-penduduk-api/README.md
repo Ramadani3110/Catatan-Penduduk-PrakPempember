@@ -55,7 +55,7 @@ php artisan serve --host=192.x.x.x --port=8000
 ```
 https://github.com/Ramadani3110/Catatan-Penduduk-PrakPempember/tree/main/postmancollection
 ```
-
+### 10. Create your own account in postmant in endpoint register in folder auth, for entered mobile application
 ### Contributors
 1. Iwan Cahyo Pambudi
 2. David Heiberth Gumogar
